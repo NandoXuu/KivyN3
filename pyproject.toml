@@ -12,7 +12,6 @@ dependencies = ["kivy>=2.3.0"]
 keywords = ["kivy", "material-design", "material3", "ui", "widgets", "android"]
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Framework :: Kivy",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
