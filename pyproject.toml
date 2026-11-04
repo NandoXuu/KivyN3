@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kivyn3"
+version = "0.0.1"
+description = "A Material Design 3 component layer and custom rendering pipeline for Kivy"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["kivy>=2.3.0"]
+keywords = ["kivy", "material-design", "material3", "ui", "widgets", "android"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Kivy",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: User Interfaces",
+]
+
+[tool.setuptools.packages.find]
+include = ["kivyn3*"]
+
+[tool.setuptools.package-data]
+kivyn3 = ["kv/*.kv"]

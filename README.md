@@ -1,0 +1,170 @@
+# KivyN3
+
+KivyN3 is a small Material Design 3-inspired component layer for [Kivy](https://kivy.org/). It provides reusable widgets, a theme manager, and a Canvas-based surface renderer for building consistent interfaces in Python and KV.
+
+The project is still under active development. APIs and visual details may change between releases, so it is best suited to experimentation and early applications at this stage.
+
+## Features
+
+- Material 3-inspired buttons, cards, labels, app bars, search bars, and navigation components.
+- A shared theme manager with light and dark color schemes.
+- Seed-based color scheme generation and semantic color roles.
+- Shape, typography, elevation, motion, and state-layer tokens.
+- Surface rendering with elevation layers, state overlays, and a stencil-clipped ripple effect.
+- KV rules for common component defaults.
+- Optional Material Design Icons font support.
+
+KivyN3 uses Kivy's existing widget and graphics systems. It does not replace or modify Kivy's native rendering core.
+
+## Requirements
+
+- Python 3.9 or newer
+- Kivy 2.3.0 or newer
+
+## Installation
+
+Install the package from PyPI:
+
+```bash
+python -m pip install kivyn3
+```
+
+To install a local checkout for development:
+
+```bash
+python -m pip install -e .
+```
+
+## Quick start
+
+```python
+from kivy.lang import Builder
+from kivyn3 import KivyN3App
+
+KV = """
+BoxLayout:
+    orientation: "vertical"
+    padding: 24
+    spacing: 16
+
+    M3TopAppBar:
+        title: "Welcome"
+        leading_icon: "menu"
+
+    M3Card:
+        variant: "elevated"
+        shape: "xl"
+        size_hint_y: None
+        height: 160
+
+        M3Label:
+            text: "Build with KivyN3"
+            role: "headline-small"
+
+        M3Button:
+            text: "Get started"
+            variant: "filled"
+"""
+
+
+class DemoApp(KivyN3App):
+    seed_color = "#6750A4"
+    color_mode = "light"
+
+    def build_root(self):
+        return Builder.load_string(KV)
+
+
+if __name__ == "__main__":
+    DemoApp().run()
+```
+
+The package loads its default KV rules when imported. The component classes are registered with Kivy's `Factory`, so they can be used in KV after importing `kivyn3`.
+
+## Components
+
+| Component | Purpose |
+| --- | --- |
+| `M3Label` | Label with Material 3-inspired typography roles and semantic text colors. |
+| `M3Button` | Button with `filled`, `tonal`, `elevated`, `outlined`, and `text` variants. |
+| `M3IconButton` | Compact icon-only button. |
+| `M3FAB` | Floating action button. |
+| `M3Card` | Card with `elevated`, `filled`, and `outlined` variants. |
+| `M3TopAppBar` | Top app bar with a title, leading icon, and support for action buttons. |
+| `M3SearchBar` | Search field with text input and an `on_search` event. |
+| `M3NavigationBar` | Navigation component that supports selectable items. |
+| `M3NavigationRail` | Rail-style navigation component. |
+| `M3Surface` | Base surface renderer used by the visual components. |
+
+## Themes
+
+`KivyN3App` exposes two class attributes for the initial theme:
+
+```python
+class MyApp(KivyN3App):
+    seed_color = "#6750A4"
+    color_mode = "dark"
+```
+
+The active theme is available through `app.theme`. You can switch between light and dark mode at runtime with:
+
+```python
+self.toggle_mode()
+```
+
+The theme manager exposes semantic color roles and design tokens. Seed-based color generation currently uses an HSL-based approximation; it is not a full implementation of Material Color Utilities' HCT algorithm. If you need an exact palette, provide the desired values through the theme's color mapping.
+
+## Search bar events
+
+`M3SearchBar` exposes a `text` property, a `placeholder`, and an `on_search` event. The event is dispatched when the user submits the text from the keyboard or activates the trailing action icon.
+
+```python
+from kivyn3 import M3SearchBar
+
+search = M3SearchBar(placeholder="Search", trailing_icon="magnify")
+search.bind(on_search=lambda instance, value: print("Search:", value))
+```
+
+You can also call `search.focus_search()` to focus the input or `search.clear()` to clear it.
+
+## Icons
+
+Icon names use Material Design Icons glyph names. KivyN3 does not bundle the icon font. To display icons, provide a compatible Material Design Icons font file and its CSS mapping when configuring your app:
+
+```python
+class MyApp(KivyN3App):
+    icon_font = "assets/materialdesignicons-webfont.ttf"
+    icon_css = "assets/materialdesignicons-webfont.css"
+```
+
+Without an icon font, the widgets remain usable, but icon glyphs will not be displayed.
+
+## Example
+
+A sample mail-style interface is included in `examples/mail_app.py`. Run it from the project directory with:
+
+```bash
+python examples/mail_app.py
+```
+
+## Building a distribution
+
+To build source and wheel distributions locally:
+
+```bash
+python -m pip install --upgrade build
+python -m build
+```
+
+The generated files will be placed in the `dist/` directory. Before uploading a release to PyPI, test the package in a clean environment and verify the distribution metadata.
+
+## Current limitations
+
+- The generated color scheme is an approximation and does not yet use the full HCT tonal palette algorithm.
+- Elevation and ripple effects are drawn with Kivy Canvas instructions; their appearance and performance depend on the active graphics backend and device.
+- The project has not yet been validated across every supported desktop and Android configuration.
+- The component set is intentionally small and does not aim to cover the full Material 3 specification yet.
+
+## License
+
+No license has been declared in this source distribution. Add a license file and the matching project metadata before publishing if you intend to grant users permission to redistribute or modify the package.
